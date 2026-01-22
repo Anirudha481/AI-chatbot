@@ -21,7 +21,7 @@ if API_KEY:
 
 def get_chat_response(message: str, stream: bool = False):
     if not API_KEY:
-        err = "Error: GEMINI_API_KEY not found."
+        err = "Error: GEMINI_API_KEY not found. Please set it in Streamlit Secrets (if deployed) or .env (if local)."
         if stream: yield err
         else: return err
         return
