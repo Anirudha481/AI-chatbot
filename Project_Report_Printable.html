@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Project Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #24292e;
+        }
+        h1, h2, h3 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        code { background-color: #f6f8fa; padding: 0.2em 0.4em; border-radius: 3px; }
+        pre { background-color: #f6f8fa; padding: 16px; overflow: auto; border-radius: 3px; }
+        blockquote { border-left: 0.25em solid #dfe2e5; color: #6a737d; padding: 0 1em; }
+        img { max-width: 100%; }
+        @media print {
+            body { max-width: 100%; padding: 0; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+<p>﻿# Project Report: AI Chatbot Assistant</p>
+<p><strong>Submitted by:</strong> Anirudha TH
+<strong>Date:</strong> 2026-01-29</p>
+<h2>1. System Architecture</h2>
+<p>The project follows a modular Client-Server architecture, designed for flexibility and ease of deployment.</p>
+<h3>Components:</h3>
+<ul>
+<li><strong>Frontend (User Interface):</strong> Built with <strong>Streamlit</strong>. It handles user input (text), displays the chat history, and renders Markdown responses. It manages the session state for chat history.</li>
+<li><strong>Backend (Logic Layer):</strong><ul>
+<li><strong>Direct Integration (Default):</strong> The Streamlit app communicates directly with the Google Gemini API using the \google-generativeai\ library.</li>
+<li><strong>FastAPI Service (Optional):</strong> A separate backend service is provided in the \ackend/\ directory, exposing a REST API. This allows for decoupling the UI from the logic if scaling is required.</li>
+</ul>
+</li>
+<li><strong>External Service (LLM):</strong> <strong>Google Gemini API</strong> (\gemini-flash-latest\ or compatible models) provides the generative AI capabilities.</li>
+</ul>
+<h3>Data Flow:</h3>
+<ol>
+<li>User inputs text in Streamlit.</li>
+<li>Input is sent to the LLM Client (either internal or via FastAPI).</li>
+<li>Client sends request to Google Gemini API.</li>
+<li>Gemini API streams the response back.</li>
+<li>Streamlit updates the UI in real-time as chunks of text arrive.</li>
+</ol>
+<h2>2. Design Decisions</h2>
+<h3>A. Tech Stack Selection</h3>
+<ul>
+<li><strong>Python:</strong> Chosen for its rich ecosystem in AI and rapid prototyping capabilities.</li>
+<li><strong>Streamlit:</strong> Selected for the frontend to enable rapid development of a data-centric UI without complex Javascript frameworks.</li>
+<li><strong>Google Gemini:</strong> Chosen as the LLM provider for its high performance and generous free tier (Flash models).</li>
+</ul>
+<h3>B. Implementation Details</h3>
+<ul>
+<li><strong>Streaming Responses:</strong> To improve perceived latency, responses are streamed. The user sees text appearing immediately rather than waiting for the full generation to complete.</li>
+<li><strong>Robust Error Handling:</strong> The application includes specific handling for \429 Too Many Requests\ errors. It implements an exponential backoff strategy to retry requests when the API quota is temporarily exceeded.</li>
+<li><strong>Model Fallback/Selection:</strong> The code is designed to use \gemini-flash-latest\ but can be easily configured for other models.</li>
+</ul>
+<h2>3. Screenshots</h2>
+<ol>
+<li><strong>Chat Interface:</strong>
+    <img alt="Chat Interface" src="screenshot.png" /></li>
+</ol>
+<h2>4. Steps to Run the Project</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Python 3.8+ installed.</li>
+<li>A Google Cloud API Key for Gemini.</li>
+</ul>
+<h3>Installation</h3>
+<ol>
+<li>
+<p><strong>Clone the repository:</strong>
+    \\ash
+    git clone https://github.com/YOUR_USERNAME/Project-chatbot.git
+    cd "Project chatbot"
+    \\</p>
+</li>
+<li>
+<p><strong>Install Dependencies:</strong>
+    \\ash
+    pip install -r requirements.txt
+    \\</p>
+</li>
+<li>
+<p><strong>Configuration:</strong></p>
+<ul>
+<li>Create a file named .env\ in the root directory.</li>
+<li>Add your API key:
+    \\env
+    GEMINI_API_KEY=your_actual_api_key_here
+    \\</li>
+</ul>
+</li>
+</ol>
+<h3>Execution</h3>
+<p><strong>Option 1: Run Streamlit App (Simplest)</strong>
+\\ash
+streamlit run streamlit_app.py
+\\
+Access the app at \http://localhost:8501.</p>
+<p><strong>Option 2: Run FastAPI Backend (Advanced)</strong>
+\\ash</p>
+<h1>Terminal 1: Backend</h1>
+<p>python -m backend.main</p>
+<h1>Terminal 2: Frontend (configured to use backend)</h1>
+<h1>(Requires modifying streamlit_app.py to point to backend URL if not default)</h1>
+<p>\\</p>
+<h2>5. Conclusion</h2>
+<p>This project demonstrates a functional, modern AI assistant capable of maintaining context and handling real-world API constraints.</p>
+</body>
+</html>
