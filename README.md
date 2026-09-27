@@ -1,8 +1,5 @@
 ﻿# Project Report: AI Chatbot Assistant
 
-**Submitted by:** Anirudha TH
-**Date:** 2026-01-29
-
 ## 1. System Architecture
 
 The project follows a modular Client-Server architecture, designed for flexibility and ease of deployment.
